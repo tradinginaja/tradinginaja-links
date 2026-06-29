@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — TradinginAja_ Testimoni Manager</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ── Admin Page Styles ── */
+    :root {
+      --bg: #07090f;
+      --bg-card: #111827;
+      --bg-input: #0d1117;
+      --border: #1e293b;
+      --border-focus: #2aabee;
+      --text: #e6edf3;
+      --text-sec: #8b949e;
+      --accent: #2aabee;
+      --accent-green: #00d68f;
+      --accent-red: #f43f5e;
+      --accent-gold: #f0b429;
+      --accent-purple: #a78bfa;
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .admin-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .admin-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .admin-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .admin-header p {
+      font-size: 0.85rem;
+      color: var(--text-sec);
+    }
+
+    .admin-header .badge {
+      display: inline-block;
+      background: rgba(42, 171, 238, 0.15);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(42, 171, 238, 0.2);
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-sec);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title i {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .card-desc {
+      font-size: 0.78rem;
+      color: var(--text-sec);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    /* ── Form Elements ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--text-sec);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(42, 171, 238, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: #4a5568;
+    }
+
+    /* ── Upload Area ── */
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-area:hover,
+    .upload-area.drag-over {
+      border-color: var(--accent);
+      background: rgba(42, 171, 238, 0.05);
+    }
+
+    .upload-area input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-area i {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .upload-area p {
+      font-size: 0.85rem;
+      color: var(--text-sec);
+    }
+
+    .upload-area .upload-hint {
+      font-size: 0.7rem;
+      color: #4a5568;
+      margin-top: 6px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1a9ad8;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(42, 171, 238, 0.3);
+    }
+
+    .btn-success {
+      background: var(--accent-green);
+      color: #0a1a0f;
+    }
+
+    .btn-success:hover {
+      background: #00c080;
+    }
+
+    .btn-danger {
+      background: var(--accent-red);
+      color: white;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+    }
+
+    .btn-danger:hover {
+      background: #e11d48;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: rgba(42, 171, 238, 0.1);
+    }
+
+    .btn-copy {
+      background: var(--accent-purple);
+      color: white;
+    }
+
+    .btn-copy:hover {
+      background: #8b5cf6;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Image List ── */
+    .image-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .image-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .image-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--bg-card);
+    }
+
+    .image-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .image-item-url {
+      font-size: 0.72rem;
+      color: var(--text-sec);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .image-item-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-sec);
+    }
+
+    .empty-state i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      opacity: 0.4;
+      display: block;
+    }
+
+    .empty-state p {
+      font-size: 0.82rem;
+    }
+
+    /* ── Code Output ── */
+    .code-output {
+      position: relative;
+    }
+
+    .code-output pre {
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-green);
+      overflow-x: auto;
+      line-height: 1.6;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* ── Alert/Notification ── */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--accent-green);
+      color: #0a1a0f;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      z-index: 1000;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Help Section ── */
+    .help-steps {
+      counter-reset: steps;
+    }
+
+    .help-step {
+      position: relative;
+      padding: 14px 14px 14px 50px;
+      margin-bottom: 8px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      counter-increment: steps;
+    }
+
+    .help-step::before {
+      content: counter(steps);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 26px;
+      height: 26px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .help-step-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .help-step-desc {
+      font-size: 0.75rem;
+      color: var(--text-sec);
+      line-height: 1.5;
+    }
+
+    .help-step code {
+      background: rgba(42, 171, 238, 0.1);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+    }
+
+    /* ── ImgBB Section ── */
+    .imgbb-info {
+      background: rgba(240, 180, 41, 0.08);
+      border: 1px solid rgba(240, 180, 41, 0.2);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .imgbb-info p {
+      font-size: 0.78rem;
+      color: var(--accent-gold);
+      line-height: 1.5;
+    }
+
+    .imgbb-info a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    /* ── Loading ── */
+    .loading {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--accent);
+      margin-top: 10px;
+    }
+
+    .loading.active {
+      display: flex;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(42, 171, 238, 0.3);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Preview Modal ── */
+    .preview-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .preview-modal.active {
+      display: flex;
+    }
+
+    .preview-modal img {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 12px;
+    }
+
+    .preview-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 520px) {
+      body { padding: 20px 14px; }
+      .card { padding: 18px; }
+      .btn-group { flex-direction: column; }
+      .btn-group .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+
+    <!-- Header -->
+    <div class="admin-header">
+      <div class="badge"><i class="fas fa-lock"></i> Admin Panel</div>
+      <h1>Testimoni Manager</h1>
+      <p>Kelola gambar testimoni untuk halaman TradinginAja_</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="manage">
+        <i class="fas fa-images"></i> Kelola Gambar
+      </button>
+      <button class="tab-btn" data-tab="upload">
+        <i class="fas fa-cloud-upload-alt"></i> Upload ImgBB
+      </button>
+      <button class="tab-btn" data-tab="help">
+        <i class="fas fa-circle-question"></i> Bantuan
+      </button>
+    </div>
+
+    <!-- ═══ Tab 1: Manage Images ═══ -->
+    <div class="tab-content active" id="tab-manage">
+
+      <!-- Add by URL -->
+      <div class="card">
+        <div class="card-title"><i class="fas fa-link"></i> Tambah Gambar via URL</div>
+        <div class="card-desc">
+          Masukkan URL gambar testimoni. Bisa dari ImgBB, GitHub, atau hosting gambar lainnya.
+        </div>
+        <div class="form-group">
+          <label class="form-label">URL Gambar</label>
+          <input type="url" class="form-input" id="url-input" placeholder="https://i.ibb.co/xxxxx/gambar.jpg">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi (opsional)</label>
+          <input type="text" class="form-input" id="alt-input" placeholder="Testimoni profit 10%">
+        </div>
+        <button class="btn btn-primary" id="add-url-btn">
+          <i class="fas fa-plus"></i> Tambah
+        </button>
+      </div>
+
+      <!-- Add from Local File -->
+      <div class="card">
+        <div class="card-title"><i class="fas fa-folder-open"></i> Tambah dari File Lokal</div>
+        <div class="card-desc">
+          Upload gambar dari komputer. Gambar akan disimpan sebagai path lokal (pastikan file juga di-upload ke folder <code>images/testimonials/</code> di repository GitHub).
+        </div>
+        <div class="upload-area" id="local-upload-area">
+          <input type="file" accept="image/*" id="local-file-input" multiple>
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Klik atau drag gambar ke sini</p>
+          <p class="upload-hint">PNG, JPG, WEBP (Bisa pilih beberapa sekaligus)</p>
+        </div>
+      </div>
+
+      <!-- Current Images -->
+      <div class="card">
+        <div class="card-title"><i class="fas fa-layer-group"></i> Daftar Testimoni</div>
+        <div class="card-desc">Gambar testimoni yang sudah ditambahkan. Klik gambar untuk preview.</div>
+        <div class="image-list" id="image-list">
+          <div class="empty-state" id="empty-state">
+            <i class="fas fa-image"></i>
+            <p>Belum ada gambar testimoni</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <div class="card">
+        <div class="card-title"><i class="fas fa-file-code"></i> Export ke testimonials.js</div>
+        <div class="card-desc">
+          Copy kode di bawah ini dan paste ke file <code>testimonials.js</code> di repository GitHub Anda. 
+          Lalu commit dan push perubahan.
+        </div>
+        <div class="btn-group" style="margin-bottom: 14px;">
+          <button class="btn btn-success" id="generate-btn">
+            <i class="fas fa-code"></i> Generate Kode
+          </button>
+          <button class="btn btn-copy" id="copy-btn" style="display:none;">
+            <i class="fas fa-copy"></i> Copy ke Clipboard
+          </button>
+        </div>
+        <div class="code-output" id="code-output" style="display:none;">
+          <pre id="code-pre"></pre>
+        </div>
+      </div>
+
+      <!-- Clear All -->
+      <div style="text-align: center; margin-top: 10px;">
+        <button class="btn btn-danger" id="clear-all-btn">
+          <i class="fas fa-trash"></i> Hapus Semua Gambar
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ═══ Tab 2: Upload to ImgBB ═══ -->
+    <div class="tab-content" id="tab-upload">
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-cloud"></i> Upload ke ImgBB (Gratis)</div>
+        <div class="card-desc">
+          ImgBB menyediakan hosting gambar gratis. Upload gambar di sini dan URL-nya akan otomatis ditambahkan ke daftar testimoni.
+        </div>
+
+        <div class="imgbb-info">
+          <p>
+            <i class="fas fa-info-circle"></i>
+            Untuk menggunakan fitur ini, Anda membutuhkan API Key dari ImgBB (gratis). 
+            <br>Daftar di <a href="https://api.imgbb.com/" target="_blank">api.imgbb.com</a> → Login → Klik "Get API key".
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ImgBB API Key</label>
+          <input type="text" class="form-input" id="imgbb-key" placeholder="Masukkan API Key ImgBB Anda">
+        </div>
+
+        <button class="btn btn-outline" id="save-key-btn" style="margin-bottom: 20px;">
+          <i class="fas fa-save"></i> Simpan API Key
+        </button>
+
+        <div class="upload-area" id="imgbb-upload-area">
+          <input type="file" accept="image/*" id="imgbb-file-input">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Pilih gambar untuk upload ke ImgBB</p>
+          <p class="upload-hint">Maks 32MB per gambar</p>
+        </div>
+
+        <div class="loading" id="upload-loading">
+          <div class="spinner"></div>
+          <span>Mengupload ke ImgBB...</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ Tab 3: Help ═══ -->
+    <div class="tab-content" id="tab-help">
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-book"></i> Cara Menggunakan</div>
+        <div class="card-desc">Ikuti langkah-langkah berikut untuk mengelola gambar testimoni.</div>
+
+        <div class="help-steps">
+
+          <div class="help-step">
+            <div class="help-step-title">Pilih Metode Upload Gambar</div>
+            <div class="help-step-desc">
+              <strong>Opsi A — ImgBB (Direkomendasikan):</strong> Gunakan tab "Upload ImgBB" untuk hosting gambar gratis. Daftar di <a href="https://api.imgbb.com/" target="_blank" style="color: var(--accent);">api.imgbb.com</a> untuk mendapatkan API Key gratis.<br><br>
+              <strong>Opsi B — File di Repository:</strong> Simpan gambar di folder <code>images/testimonials/</code> di repository GitHub Anda. Lalu tambahkan URL lokal di tab "Kelola Gambar".
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="help-step-title">Tambahkan Gambar</div>
+            <div class="help-step-desc">
+              Di tab "Kelola Gambar", tambahkan gambar melalui URL atau file lokal. Anda bisa menambahkan sebanyak mungkin gambar. Gambar bisa di-reorder dan dihapus.
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="help-step-title">Generate Kode</div>
+            <div class="help-step-desc">
+              Klik tombol "Generate Kode" untuk membuat isi file <code>testimonials.js</code>. Copy kode yang dihasilkan.
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="help-step-title">Update File di GitHub</div>
+            <div class="help-step-desc">
+              Buka repository GitHub Anda → File <code>testimonials.js</code> → Klik ikon edit (pensil) → Hapus semua isi lama → Paste kode baru → Klik "Commit changes".
+            </div>
+          </div>
+
+          <div class="help-step">
+            <div class="help-step-title">Selesai!</div>
+            <div class="help-step-desc">
+              Website akan otomatis diperbarui dengan gambar testimoni baru. Tunggu 1-2 menit agar GitHub Pages memprosesnya.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="help-step-title" style="margin-bottom: 12px;">
+          <i class="fas fa-circle-question" style="color: var(--accent);"></i> FAQ
+        </div>
+
+        <div class="help-step" style="padding-left: 14px; counter-increment: none;">
+          <div class="help-step-title">Apakah ImgBB benar-benar gratis?</div>
+          <div class="help-step-desc">
+            Ya! ImgBB menyediakan hosting gambar gratis tanpa batas waktu. Ukuran maks per gambar 32MB.
+          </div>
+        </div>
+        <div class="help-step" style="padding-left: 14px; counter-increment: none;">
+          <div class="help-step-title">Berapa lama gambar di ImgBB tersimpan?</div>
+          <div class="help-step-desc">
+            Gambar tersimpan selamanya (tidak ada expiry) selama akun aktif.
+          </div>
+        </div>
+        <div class="help-step" style="padding-left: 14px; counter-increment: none;">
+          <div class="help-step-title">Bagaimana mengubah interval slide?</div>
+          <div class="help-step-desc">
+            Edit nilai <code>SLIDE_INTERVAL</code> di file <code>testimonials.js</code>. Satuan dalam milidetik (5000 = 5 detik).
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Preview Modal -->
+  <div class="preview-modal" id="preview-modal">
+    <button class="preview-close" id="preview-close"><i class="fas fa-times"></i></button>
+    <img id="preview-img" src="" alt="Preview">
+  </div>
+
+  <script>
+    // ============================================
+    // ADMIN PANEL LOGIC
+    // ============================================
+
+    // ── State ──
+    let testimonials = JSON.parse(localStorage.getItem('admin_testimonials') || '[]');
+
+    // ── DOM Elements ──
+    const imageList = document.getElementById('image-list');
+    const emptyState = document.getElementById('empty-state');
+    const urlInput = document.getElementById('url-input');
+    const altInput = document.getElementById('alt-input');
+    const addUrlBtn = document.getElementById('add-url-btn');
+    const localFileInput = document.getElementById('local-file-input');
+    const generateBtn = document.getElementById('generate-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const codeOutput = document.getElementById('code-output');
+    const codePre = document.getElementById('code-pre');
+    const clearAllBtn = document.getElementById('clear-all-btn');
+    const imgbbKeyInput = document.getElementById('imgbb-key');
+    const saveKeyBtn = document.getElementById('save-key-btn');
+    const imgbbFileInput = document.getElementById('imgbb-file-input');
+    const uploadLoading = document.getElementById('upload-loading');
+    const toast = document.getElementById('toast');
+    const previewModal = document.getElementById('preview-modal');
+    const previewImg = document.getElementById('preview-img');
+    const previewClose = document.getElementById('preview-close');
+
+    // ── Init ──
+    function init() {
+      renderList();
+      setupTabs();
+
+      // Load saved ImgBB key
+      const savedKey = localStorage.getItem('imgbb_api_key');
+      if (savedKey) imgbbKeyInput.value = savedKey;
+    }
+
+    // ── Tabs ──
+    function setupTabs() {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        });
+      });
+    }
+
+    // ── Render Image List ──
+    function renderList() {
+      // Clear existing items (but keep empty state)
+      imageList.querySelectorAll('.image-item').forEach(el => el.remove());
+
+      if (testimonials.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      testimonials.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'image-item';
+        div.innerHTML = `
+          <img src="${item.url}" alt="${item.alt}" onclick="previewImage('${item.url}')" style="cursor:pointer" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><rect fill=%22%23111827%22 width=%2260%22 height=%2260%22/><text fill=%22%238b949e%22 x=%2230%22 y=%2234%22 text-anchor=%22middle%22 font-size=%2210%22>Error</text></svg>'">
+          <div class="image-item-info">
+            <div class="image-item-label">${item.alt || 'Testimoni ' + (idx + 1)}</div>
+            <div class="image-item-url">${item.url}</div>
+          </div>
+          <button class="btn btn-danger" onclick="removeImage(${idx})">
+            <i class="fas fa-trash"></i>
+          </button>
+        `;
+        imageList.appendChild(div);
+      });
+
+      saveState();
+    }
+
+    // ── Add by URL ──
+    addUrlBtn.addEventListener('click', () => {
+      const url = urlInput.value.trim();
+      if (!url) {
+        showToast('Masukkan URL gambar terlebih dahulu!', 'error');
+        return;
+      }
+
+      testimonials.push({
+        url: url,
+        alt: altInput.value.trim() || 'Testimoni ' + (testimonials.length + 1)
+      });
+
+      urlInput.value = '';
+      altInput.value = '';
+      renderList();
+      showToast('Gambar berhasil ditambahkan!');
+    });
+
+    // Enter key support
+    urlInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') addUrlBtn.click();
+    });
+
+    // ── Add from Local File ──
+    localFileInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      files.forEach(file => {
+        const path = `images/testimonials/${file.name}`;
+        testimonials.push({
+          url: path,
+          alt: file.name.replace(/\.[^.]+$/, '')
+        });
+      });
+      renderList();
+      showToast(`${files.length} gambar ditambahkan! Pastikan file juga di-upload ke folder images/testimonials/ di GitHub.`);
+      e.target.value = '';
+    });
+
+    // Drag and drop
+    const localUploadArea = document.getElementById('local-upload-area');
+    ['dragover', 'dragenter'].forEach(event => {
+      localUploadArea.addEventListener(event, (e) => {
+        e.preventDefault();
+        localUploadArea.classList.add('drag-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(event => {
+      localUploadArea.addEventListener(event, () => {
+        localUploadArea.classList.remove('drag-over');
+      });
+    });
+
+    // ── Remove Image ──
+    function removeImage(idx) {
+      testimonials.splice(idx, 1);
+      renderList();
+      showToast('Gambar dihapus.');
+    }
+
+    // ── Clear All ──
+    clearAllBtn.addEventListener('click', () => {
+      if (testimonials.length === 0) return;
+      if (confirm('Hapus semua gambar testimoni?')) {
+        testimonials = [];
+        renderList();
+        codeOutput.style.display = 'none';
+        copyBtn.style.display = 'none';
+        showToast('Semua gambar dihapus.');
+      }
+    });
+
+    // ── Generate Code ──
+    generateBtn.addEventListener('click', () => {
+      let code = `// ============================================\n`;
+      code += `// TESTIMONIALS DATA — Auto-generated by Admin Panel\n`;
+      code += `// Generated: ${new Date().toLocaleString('id-ID')}\n`;
+      code += `// ============================================\n\n`;
+      code += `const TESTIMONIALS = [\n`;
+
+      testimonials.forEach((item, idx) => {
+        const comma = idx < testimonials.length - 1 ? ',' : '';
+        code += `  { url: "${item.url}", alt: "${item.alt}" }${comma}\n`;
+      });
+
+      code += `];\n\n`;
+      code += `// Interval slide otomatis (dalam milidetik)\n`;
+      code += `const SLIDE_INTERVAL = 5000;\n`;
+
+      codePre.textContent = code;
+      codeOutput.style.display = 'block';
+      copyBtn.style.display = 'inline-flex';
+      showToast('Kode berhasil di-generate!');
+    });
+
+    // ── Copy to Clipboard ──
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(codePre.textContent);
+        showToast('Kode berhasil di-copy ke clipboard!');
+      } catch (err) {
+        // Fallback
+        const textArea = document.createElement('textarea');
+        textArea.value = codePre.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showToast('Kode berhasil di-copy!');
+      }
+    });
+
+    // ── ImgBB Upload ──
+    saveKeyBtn.addEventListener('click', () => {
+      const key = imgbbKeyInput.value.trim();
+      if (!key) {
+        showToast('Masukkan API Key!', 'error');
+        return;
+      }
+      localStorage.setItem('imgbb_api_key', key);
+      showToast('API Key tersimpan!');
+    });
+
+    imgbbFileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const apiKey = imgbbKeyInput.value.trim() || localStorage.getItem('imgbb_api_key');
+      if (!apiKey) {
+        showToast('Masukkan API Key ImgBB terlebih dahulu!', 'error');
+        return;
+      }
+
+      uploadLoading.classList.add('active');
+
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          testimonials.push({
+            url: data.data.display_url,
+            alt: file.name.replace(/\.[^.]+$/, '')
+          });
+          renderList();
+          showToast('Gambar berhasil diupload ke ImgBB!');
+
+          // Switch to manage tab to show the added image
+          document.querySelector('.tab-btn[data-tab="manage"]').click();
+        } else {
+          showToast('Upload gagal: ' + (data.error?.message || 'Unknown error'), 'error');
+        }
+      } catch (err) {
+        showToast('Upload gagal: ' + err.message, 'error');
+      } finally {
+        uploadLoading.classList.remove('active');
+        e.target.value = '';
+      }
+    });
+
+    // ── Preview Image ──
+    function previewImage(url) {
+      previewImg.src = url;
+      previewModal.classList.add('active');
+    }
+
+    previewClose.addEventListener('click', () => {
+      previewModal.classList.remove('active');
+      previewImg.src = '';
+    });
+
+    previewModal.addEventListener('click', (e) => {
+      if (e.target === previewModal) {
+        previewModal.classList.remove('active');
+        previewImg.src = '';
+      }
+    });
+
+    // ── Save/Load State ──
+    function saveState() {
+      localStorage.setItem('admin_testimonials', JSON.stringify(testimonials));
+    }
+
+    // ── Toast Notification ──
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.style.background = type === 'error' ? 'var(--accent-red)' : 'var(--accent-green)';
+      toast.style.color = type === 'error' ? 'white' : '#0a1a0f';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ── Start ──
+    init();
+  </script>
+</body>
+</html>
